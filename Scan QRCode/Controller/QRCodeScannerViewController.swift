@@ -97,8 +97,8 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 		// Instead of hardcoding the AVMetadataObjectTypeQRCode, we check if the type
 		// can be found in the array of supported bar codes.
 		if supportedBarCodes.contains(metadataObj.type) {
-			//        if metadataObj.type == AVMetadataObjectTypeQRCode {
-			// If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
+			// if metadataObj.type == AVMetadataObjectTypeQRCode {
+			// If the found metadata is equal to the QR code metadata, update status label's text, set the bounds
 			let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
 			qrcodeFrameView?.frame = barCodeObject!.bounds
 			
