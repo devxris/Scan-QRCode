@@ -79,6 +79,41 @@ class QRCodeScannerViewController: UIViewController {
 			print(error); return
 		}
 	}
+	
+	// MARK: URL Schemes helper function
+	
+	/* URL Scheme
+	1. launch app in code as below code
+	2. register url scheme to open other apps: LSApplicationQueriesSchemes: Array (eg. item0: urlschemereader)
+	3. make self to be opened:
+	info.plist: URL types (Array)
+					item 0 (Dictionary)
+					URL Schemes (Array)
+						item 0 (String): product name (eg. urlschemereader)
+					URL Identifier (String)
+	4. supported schemes:
+	a. http:// -> open Safari
+	b. tel://12345 -> open Phone
+	c. sms://12345 -> open Messages
+	d. mailto:emailaddress -> open Mail
+	e. registerd app:// -> open registered app, eg. fb://feed, whatsapp://send?text=Hello!
+	*/
+	
+	func launchApp(decodedURL: String) {
+		if presentedViewController != nil { return } // make sure there is no existed presentingViewController
+		let alert = UIAlertController(title: "Open App", message: "You're going to open \(decodedURL)", preferredStyle: .actionSheet)
+		let confirm = UIAlertAction(title: "Confirm", style: .default) { (action) in
+			if let url = URL(string: decodedURL) {
+				if UIApplication.shared.canOpenURL(url) {
+					UIApplication.shared.open(url, options: [:], completionHandler: nil)
+				}
+			}
+		}
+		let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+		alert.addAction(confirm)
+		alert.addAction(cancel)
+		present(alert, animated: true, completion: nil)
+	}
 }
 
 extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
@@ -104,6 +139,7 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 			
 			if metadataObj.stringValue != nil {
 				messageLabel.text = metadataObj.stringValue
+				launchApp(decodedURL: metadataObj.stringValue!)
 			}
 		}
 	}
