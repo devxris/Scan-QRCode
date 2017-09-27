@@ -130,7 +130,7 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 		let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
 		// Here we use filter method to check if the type of metadataObj is supported
 		// Instead of hardcoding the AVMetadataObjectTypeQRCode, we check if the type
-		// can be found in the array of supported bar codes.
+		// can be found in the array of supported bar codes
 		if supportedBarCodes.contains(metadataObj.type) {
 			// if metadataObj.type == AVMetadataObjectTypeQRCode {
 			// If the found metadata is equal to the QR code metadata, update status label's text, set the bounds
